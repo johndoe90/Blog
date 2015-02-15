@@ -1,16 +1,26 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:faces="http://www.springframework.org/schema/faces"
 		xmlns:context="http://www.springframework.org/schema/context"
 		xmlns:flow="http://www.springframework.org/schema/webflow-config"
-		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		xsi:schemaLocation="http://www.springframework.org/schema/faces http://www.springframework.org/schema/faces/spring-faces-2.4.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
 							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
 							http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.3.xsd">
+	
+	<bean id="facesContextListener" class="org.springframework.faces.webflow.FlowFacesContextLifecycleListener" />
 		
+	<faces:flow-builder-services id="facesFlowBuilderServices"/>
+	
 	<!-- Responsible for creating and executing flows -->
-	<flow:flow-executor id="flowExecutor" />
+	<flow:flow-executor id="flowExecutor">
+		<flow:flow-execution-listeners>
+			<flow:listener ref="facesContextListener" />
+		</flow:flow-execution-listeners>
+	</flow:flow-executor>
 	
 	<!-- Responsible for loading flow definitions and making them available to the flow executor -->
-	<flow:flow-registry id="flowRegistry" base-path="/WEB-INF/flows">
+	<flow:flow-registry id="flowRegistry" flow-builder-services="facesFlowBuilderServices" base-path="/WEB-INF/flows">
 		<flow:flow-location-pattern value="/**/*-flow.xml"/>
 	</flow:flow-registry>
 	
@@ -23,4 +33,8 @@
 	<bean class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter">
 		<property name="flowExecutor" ref="flowExecutor" />
 	</bean>
+	
+	<!-- <bean id="flowController" class="org.springframework.webflow.mvc.servlet.FlowController">
+		<property name="flowExecutor" ref="flowExecutor" />
+	</bean> -->
 </beans>

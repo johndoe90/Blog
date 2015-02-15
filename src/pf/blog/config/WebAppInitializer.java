@@ -23,11 +23,10 @@ public class WebAppInitializer implements WebApplicationInitializer {
 		
 		ServletRegistration.Dynamic dispatcherServlet = servletContext.addServlet("dispatcherServlet", new DispatcherServlet(rootContext));
 		dispatcherServlet.setLoadOnStartup(1);
-		dispatcherServlet.addMapping("/spring/*");
+		dispatcherServlet.addMapping("/*");
 		
 		ServletRegistration.Dynamic facesServlet = servletContext.addServlet("facesServlet", new FacesServlet());
 		facesServlet.setLoadOnStartup(1);
 		facesServlet.addMapping("*.xhtml");
 	}
-
 }

@@ -22,7 +22,7 @@ public class PersistenceConfig {
 
 	private Properties properties() {
 		Properties props = new Properties();
-		props.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+		props.setProperty("hibernate.hbm2ddl.auto", "create");
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL9Dialect");
 	    
 	    return props;
